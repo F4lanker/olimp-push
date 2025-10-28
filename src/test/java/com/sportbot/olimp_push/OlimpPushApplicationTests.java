@@ -1,0 +1,13 @@
+package com.sportbot.olimp_push;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class OlimpPushApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
