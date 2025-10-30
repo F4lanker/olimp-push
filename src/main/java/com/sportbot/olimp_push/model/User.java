@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ public class User {
     private String userName;
     private String firstName;
     // Вес в килограммах, например: 72.50
+    @Min(value = 1, message = "weight must be positive")
     private BigDecimal weight;
     // Рост в сантиметрах
     private int height;
