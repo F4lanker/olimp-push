@@ -50,7 +50,9 @@ public class SportBot extends TelegramLongPollingBot {
             user.setChatId(chatId);
             user.setUserName(message.getFrom().getUserName());
             user.setFirstName(message.getFrom().getFirstName());
-            userRepository.save(user);
+            if(!userRepository.existsById(chatId)){
+                userRepository.save(user);
+            }
 
             // Простой ответ
             if (text.equals("/start")) {
