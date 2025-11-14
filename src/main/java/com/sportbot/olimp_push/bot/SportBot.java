@@ -1,5 +1,7 @@
 package com.sportbot.olimp_push.bot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.sportbot.olimp_push.model.User;
 import com.sportbot.olimp_push.repository.PushUpEntryRepository;
 import com.sportbot.olimp_push.repository.UserRepository;
@@ -12,22 +14,24 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import lombok.*;
 
+
 @Component
 public class SportBot extends TelegramLongPollingBot {
+    private static final Logger log = LoggerFactory.getLogger(SportBot.class);
     private final String botToken;
     private final String botUsername;
     private final UserRepository userRepository;
 
     public SportBot(
-            @Value("${TELEGRAM_BOT_TOKEN}") String botToken,
-            @Value("${TELEGRAM_BOT_USERNAME}") String botUsername,
+            @Value("${telegram.bot.token}") String botToken,
+            @Value("${telegram.bot.username}") String botUsername,
             UserRepository userRepository
     ){
         this.botToken = botToken;
         this.botUsername = botUsername;
         this.userRepository = userRepository;
+        log.info("✅ SportBot initialized with token: {}", botToken.substring(0, 10) + "...");
     }
-
     @Override
     public String getBotToken() {
         return botToken;
@@ -40,10 +44,15 @@ public class SportBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        // Логируем входящее сообщение
+        log.info("📥 onUpdateReceived вызван! Обновление: {}", update);
+        log.info("📬 Received update: {}", update.getMessage().getText());
+        // Проверяем, есть ли сообщение и текст
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message message = update.getMessage();
             Long chatId = message.getChatId();
             String text = message.getText();
+            log.info("📬 Received message from {}: {}", chatId, text);
 
             // Сохраняем/обновляем пользователя
             User user = new User();
